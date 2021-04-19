@@ -2,6 +2,7 @@
 body {
     background-color: #c2f0f0;
     margin: 0;
+    text-align: center;
 }
 
 hr {
@@ -9,13 +10,12 @@ hr {
     border-top-style: dotted;
     border-color: grey;
     border-width: 7px;
-    width: 5%;
+    width: 10%;
 }
 
 img {
     position: relative;
-    left: 75px;
-    
+    /* left: 75px; */
 }
 
 h1 {
