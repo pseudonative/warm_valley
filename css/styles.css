@@ -37,8 +37,8 @@ h3 {
     left: 30px;
 }
 h4 {
-    color: teal;
-    
+    color:teal;
+    position: relative;
 }
 
 #heading {
