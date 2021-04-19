@@ -38,8 +38,8 @@ h3 {
 }
 ul {
     color: teal;
-    position: relative;
-    left: 30px;
+    /* position: relative;
+    left: 30px; */
 }
 
 #heading {
