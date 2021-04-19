@@ -1,6 +1,7 @@
 
 body {
     background-color: #c2f0f0;
+    margin: 0;
 }
 
 hr {
@@ -11,17 +12,37 @@ hr {
     width: 5%;
 }
 
+img {
+    position: relative;
+    left: 75px;
+    
+}
+
 h1 {
-    color: #66BFBF;
+    color: teal;
+    margin-top: 0;
+    position: relative;
+    left: 30px;
 }
 
 h2 {
     color: #66BFBF;
+    position: relative;
+    left: 30px;
 }
 
 h3 {
     color: #66BFBF;
+    position: relative;
+    left: 30px;
 }
 ul {
     color: teal;
+    position: relative;
+    left: 30px;
+}
+
+#heading {
+    color:teal;
+    font-size: 75px;
 }
