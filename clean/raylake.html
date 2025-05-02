@@ -2,31 +2,21 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Cleaner Dashboard</title>
+  <title>Ray Lake Dashboard</title>
   <style>
-    body { font-family: sans-serif; background: #f2f2f2; padding: 2rem; }
+    body { font-family: sans-serif; padding: 2rem; background: #f2f2f2; }
     .hidden { display: none; }
     .login-box, .dashboard {
       background: white; padding: 2rem; border-radius: 8px;
-      max-width: 500px; margin: 2rem auto; box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
+      max-width: 600px; margin: 2rem auto; box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .button {
-      padding: 10px 20px;
-      font-size: 1.2em;
-      margin: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      display: inline-block;
-    }
+    img { max-width: 100%; height: auto; border: 1px solid #ccc; margin-top: 1rem; }
+    pre { background: #eee; padding: 1rem; border-radius: 5px; }
   </style>
 </head>
 <body>
   <div class="login-box" id="loginBox">
-    <h2>Cleaner Login</h2>
+    <h2>Ray Lake Login</h2>
     <label>Username: <input type="text" id="username"></label><br><br>
     <label>Password: <input type="password" id="password"></label><br><br>
     <button onclick="login()">Login</button>
@@ -34,9 +24,15 @@
   </div>
 
   <div class="dashboard hidden" id="dashboard">
-    <h1>Cleaner Dashboard</h1>
-    <a class="button" href="raylake.html">Ray Lake Dashboard</a>
-    <a class="button" href="santafe.html">Santa Fe Dashboard</a>
+    <h1>Ray Lake Cleaner Dashboard</h1>
+
+    <h2>Calendar</h2>
+    <img src="raylake/calendar.png" alt="Ray Lake Calendar" />
+
+    <h2>Guests & PINs</h2>
+    <pre id="raylakePins">Loading...</pre>
+
+    <p><a href="index.html">⬅ Back to Main Dashboard</a></p>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
@@ -54,9 +50,15 @@
       if (USERS[user] === hashed) {
         document.getElementById('loginBox').classList.add('hidden');
         document.getElementById('dashboard').classList.remove('hidden');
+        loadPins();
       } else {
         document.getElementById('error').innerText = "Access denied";
       }
+    }
+
+    async function loadPins() {
+      const raylake = await fetch('raylake/guests.json').then(r => r.json());
+      document.getElementById('raylakePins').textContent = JSON.stringify(raylake, null, 2);
     }
   </script>
 </body>
