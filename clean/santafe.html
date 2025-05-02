@@ -24,13 +24,13 @@
   </div>
 
   <div class="dashboard hidden" id="dashboard">
-    <h1>Santa Fe Cleaner Dashboard</h1>
+    <h1>Santa Fe Guests</h1>
 
     <h2>Calendar</h2>
-    <img src="santafe/calendar.png" alt="Under Construction" />
+    <img src="santafe/under_construction.png" alt="Under Construction" />
 
     <h2>Guests & PINs</h2>
-    <pre id="santafePins">Loading...</pre>
+    <pre id="santafePins">This section is currently under construction. Please check back soon.</pre>
 
     <p><a href="index.html">⬅ Back to Main Dashboard</a></p>
   </div>
@@ -50,15 +50,9 @@
       if (USERS[user] === hashed) {
         document.getElementById('loginBox').classList.add('hidden');
         document.getElementById('dashboard').classList.remove('hidden');
-        loadPins();
       } else {
         document.getElementById('error').innerText = "Access denied";
       }
-    }
-
-    async function loadPins() {
-      const santafe = await fetch('santafe/guests.json').then(r => r.json());
-      document.getElementById('santafePins').textContent = JSON.stringify(santafe, null, 2);
     }
   </script>
 </body>
