@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cleaner Dashboard</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    pre { background: #f3f3f3; padding: 1rem; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <script>
+    const password = prompt("Enter password to access the cleaner dashboard:");
+    if (password !== "warmvalley2025") {
+      document.body.innerHTML = "<h2>Access denied</h2>";
+      throw new Error("Unauthorized");
+    }
+  </script>
+
+  <h1>Cleaner Dashboard</h1>
+
+  <h2>Ray Lake</h2>
+  <pre id="raylakePins">Loading...</pre>
+
+  <h2>Santa Fe</h2>
+  <pre id="santafePins">Loading...</pre>
+
+  <script>
+    fetch("raylake/guests.json")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("raylakePins").textContent = JSON.stringify(data, null, 2);
+      });
+
+    fetch("santafe/guests.json")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("santafePins").textContent = JSON.stringify(data, null, 2);
+      });
+  </script>
+</body>
+</html>
