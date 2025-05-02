@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Santa Fe Dashboard</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f2f2f2; }
+    .hidden { display: none; }
+    .container { background: white; padding: 2rem; border-radius: 8px; max-width: 700px; margin: 2rem auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .back-link { margin-top: 1rem; display: block; }
+  </style>
+</head>
+<body>
+  <div class="container hidden" id="dashboard">
+    <h1>Santa Fe Dashboard</h1>
+    <p><strong>Note:</strong> This section is currently under construction. Please check back soon.</p>
+    <a href="index.html" class="back-link">← Back to Main Dashboard</a>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+  <script>
+    const USERS = {
+      "raylake": "482c811da5d5b4bc6d497ffa98491e38",
+      "santafe": "482c811da5d5b4bc6d497ffa98491e38"
+    };
+
+    const promptLogin = () => {
+      const user = prompt("Username:")?.trim().toLowerCase();
+      const pass = prompt("Password:");
+      const hashed = md5(pass || "");
+      return USERS[user] === hashed;
+    };
+
+    if (promptLogin()) {
+      document.getElementById("dashboard").classList.remove("hidden");
+    } else {
+      document.write("<h1 style='color:red; text-align:center;'>Access Denied</h1>");
+    }
+  </script>
+</body>
+</html>
