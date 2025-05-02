@@ -1,46 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Cleaner Dashboard</title>
+  <meta charset="UTF-8">
+  <title>Cleaner Login</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    #dashboard { display: none; }
+    body { font-family: sans-serif; padding: 2rem; background: #f2f2f2; }
+    .hidden { display: none; }
+    .login-box, .dashboard { background: white; padding: 2rem; border-radius: 8px; max-width: 500px; margin: 2rem auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
-  <div id="login">
-    <h2>Enter Password to Access the Cleaner Dashboard</h2>
-    <input type="password" id="pwdInput" placeholder="Password" />
-    <button onclick="checkPassword()">Submit</button>
+  <div class="login-box" id="loginBox">
+    <h2>Cleaner Login</h2>
+    <label>Username: <input type="text" id="username"></label><br><br>
+    <label>Password: <input type="password" id="password"></label><br><br>
+    <button onclick="login()">Login</button>
+    <p id="error" style="color:red;"></p>
   </div>
 
-  <div id="dashboard">
+  <div class="dashboard hidden" id="dashboard">
     <h1>Cleaner Dashboard</h1>
     <h2>Ray Lake</h2>
-    <pre id="raylakePins"></pre>
+    <pre id="raylakePins">Loading...</pre>
     <h2>Santa Fe</h2>
-    <pre id="santafePins"></pre>
+    <pre id="santafePins">Loading...</pre>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
   <script>
-    const PASSWORD = "clean2024"; // Set your password here
+    const USERS = {
+      "cleaner1": "5f4dcc3b5aa765d61d8327deb882cf99", // password
+      "cleaner2": "098f6bcd4621d373cade4e832627b4f6"  // test
+    };
 
-    function checkPassword() {
-      const input = document.getElementById("pwdInput").value;
-      if (input === PASSWORD) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
+    function login() {
+      const user = document.getElementById('username').value.trim().toLowerCase();
+      const pass = document.getElementById('password').value;
+      const hashed = md5(pass);
+
+      if (USERS[user] === hashed) {
+        document.getElementById('loginBox').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
         loadPins();
       } else {
-        alert("Access Denied");
+        document.getElementById('error').innerText = "Access denied";
       }
     }
 
     async function loadPins() {
-      const rl = await fetch("raylake/guests.json").then(r => r.json());
-      const sf = await fetch("santafe/guests.json").then(r => r.json());
-      document.getElementById("raylakePins").textContent = JSON.stringify(rl, null, 2);
-      document.getElementById("santafePins").textContent = JSON.stringify(sf, null, 2);
+      const raylake = await fetch('raylake/guests.json').then(res => res.json());
+      const santafe = await fetch('santafe/guests.json').then(res => res.json());
+      document.getElementById('raylakePins').textContent = JSON.stringify(raylake, null, 2);
+      document.getElementById('santafePins').textContent = JSON.stringify(santafe, null, 2);
     }
   </script>
 </body>
