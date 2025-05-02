@@ -6,35 +6,59 @@
   <style>
     body { font-family: sans-serif; padding: 2rem; background: #f2f2f2; }
     .hidden { display: none; }
-    .container { background: white; padding: 2rem; border-radius: 8px; max-width: 700px; margin: 2rem auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .back-link { margin-top: 1rem; display: block; }
+    .login-box, .dashboard {
+      background: white; padding: 2rem; border-radius: 8px;
+      max-width: 600px; margin: 2rem auto; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    img { max-width: 100%; height: auto; border: 1px solid #ccc; margin-top: 1rem; }
+    pre { background: #eee; padding: 1rem; border-radius: 5px; }
   </style>
 </head>
 <body>
-  <div class="container hidden" id="dashboard">
-    <h1>Santa Fe Dashboard</h1>
-    <p><strong>Note:</strong> This section is currently under construction. Please check back soon.</p>
-    <a href="index.html" class="back-link">← Back to Main Dashboard</a>
+  <div class="login-box" id="loginBox">
+    <h2>Santa Fe Login</h2>
+    <label>Username: <input type="text" id="username"></label><br><br>
+    <label>Password: <input type="password" id="password"></label><br><br>
+    <button onclick="login()">Login</button>
+    <p id="error" style="color:red;"></p>
+  </div>
+
+  <div class="dashboard hidden" id="dashboard">
+    <h1>Santa Fe Cleaner Dashboard</h1>
+
+    <h2>Calendar</h2>
+    <img src="santafe/calendar.png" alt="Under Construction" />
+
+    <h2>Guests & PINs</h2>
+    <pre id="santafePins">Loading...</pre>
+
+    <p><a href="index.html">⬅ Back to Main Dashboard</a></p>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
   <script>
     const USERS = {
-      "raylake": "482c811da5d5b4bc6d497ffa98491e38",
-      "santafe": "482c811da5d5b4bc6d497ffa98491e38"
+      "santafe": "482c811da5d5b4bc6d497ffa98491e38",
+      "raylake": "482c811da5d5b4bc6d497ffa98491e38"
     };
 
-    const promptLogin = () => {
-      const user = prompt("Username:")?.trim().toLowerCase();
-      const pass = prompt("Password:");
-      const hashed = md5(pass || "");
-      return USERS[user] === hashed;
-    };
+    function login() {
+      const user = document.getElementById('username').value.trim().toLowerCase();
+      const pass = document.getElementById('password').value;
+      const hashed = md5(pass);
 
-    if (promptLogin()) {
-      document.getElementById("dashboard").classList.remove("hidden");
-    } else {
-      document.write("<h1 style='color:red; text-align:center;'>Access Denied</h1>");
+      if (USERS[user] === hashed) {
+        document.getElementById('loginBox').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        loadPins();
+      } else {
+        document.getElementById('error').innerText = "Access denied";
+      }
+    }
+
+    async function loadPins() {
+      const santafe = await fetch('santafe/guests.json').then(r => r.json());
+      document.getElementById('santafePins').textContent = JSON.stringify(santafe, null, 2);
     }
   </script>
 </body>
