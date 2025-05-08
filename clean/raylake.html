@@ -35,41 +35,47 @@
     <p><a href="index.html">⬅ Back to Main Dashboard</a></p>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-  <script>
-    const USERS = {
-      "raylake": "482c811da5d5b4bc6d497ffa98491e38", // password
-      "santafe": "482c811da5d5b4bc6d497ffa98491e38"  // test
-    };
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+<script>
+  const USERS = {
+    "raylake": "482c811da5d5b4bc6d497ffa98491e38",
+    "santafe": "482c811da5d5b4bc6d497ffa98491e38"
+  };
 
-    function login() {
-      const user = document.getElementById('username').value.trim().toLowerCase();
-      const pass = document.getElementById('password').value;
-      const hashed = md5(pass);
+  function login() {
+    const user = document.getElementById('username').value.trim().toLowerCase();
+    const pass = document.getElementById('password').value;
+    const hashed = md5(pass);
 
-      if (USERS[user] === hashed) {
-        localStorage.setItem("cleaner_user", user);
-        document.getElementById('loginBox').classList.add('hidden');
-        document.getElementById('dashboard').classList.remove('hidden');
-        loadPins(); 
-} else {
-        document.getElementById('error').innerText = "Access denied";
-      }
+    if (USERS[user] === hashed) {
+      localStorage.setItem("cleaner_user", user);
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      loadPins();
+    } else {
+      document.getElementById('error').innerText = "Access denied";
     }
+  }
 
-    async function loadPins() {
+  async function loadPins() {
+    try {
       const raylake = await fetch('raylake/guests.json').then(r => r.json());
       document.getElementById('raylakePins').textContent = JSON.stringify(raylake, null, 2);
+    } catch (err) {
+      document.getElementById('raylakePins').textContent = "Failed to load guest data.";
     }
- 
-  window.addEventListener("DOMContentLoaded", () => {
-  const savedUser = localStorage.getItem("cleaner_user");
-  if (savedUser && USERS[savedUser]) {
-    document.getElementById('loginBox').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
   }
-});
-  </script>
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const savedUser = localStorage.getItem("cleaner_user");
+    if (savedUser && USERS[savedUser]) {
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      loadPins(); // ✅ THIS is the fix
+    }
+  });
+</script>
+
   
 </body>
 </html>
