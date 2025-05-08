@@ -48,10 +48,10 @@
       const hashed = md5(pass);
 
       if (USERS[user] === hashed) {
+        localStorage.setItem("cleaner_user", user);
         document.getElementById('loginBox').classList.add('hidden');
         document.getElementById('dashboard').classList.remove('hidden');
-        loadPins();
-      } else {
+} else {
         document.getElementById('error').innerText = "Access denied";
       }
     }
@@ -60,6 +60,19 @@
       const raylake = await fetch('raylake/guests.json').then(r => r.json());
       document.getElementById('raylakePins').textContent = JSON.stringify(raylake, null, 2);
     }
+      async function loadPins() {
+      const raylake = await fetch('raylake/guests.json').then(r => r.json());
+      document.getElementById('raylakePins').textContent = JSON.stringify(raylake, null, 2);
+    }
+ 
+  window.addEventListener("DOMContentLoaded", () => {
+  const savedUser = localStorage.getItem("cleaner_user");
+  if (savedUser && USERS[savedUser]) {
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+  }
+});
   </script>
+  
 </body>
 </html>
