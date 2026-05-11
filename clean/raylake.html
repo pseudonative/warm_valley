@@ -24,10 +24,24 @@
       border: 1px solid #ccc;
       margin-top: 1rem;
     }
-    pre {
-      background: #eee;
-      padding: 1rem;
-      border-radius: 5px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #f0f0f0;
+      font-weight: bold;
+    }
+    td.pin {
+      font-weight: bold;
+      font-size: 1.2rem;
+      letter-spacing: 0.1rem;
     }
     .reminder-banner {
       background: #e6f3ff;
@@ -64,22 +78,31 @@
   <div class="dashboard" id="dashboard">
     <h1>Ray Lake Guests</h1>
 
+    <h2>Guests & PINs</h2>
+    <table>
+      <thead><tr><th>Guest</th><th>Dates</th><th>PIN</th></tr></thead>
+      <tbody id="raylakePins"><tr><td colspan="3">Loading...</td></tr></tbody>
+    </table>
+
     <h2>Calendar</h2>
     <img src="raylake/calendar.png" alt="Ray Lake Calendar" />
-
-    <h2>Guests & PINs</h2>
-    <pre id="raylakePins">Loading...</pre>
 
     <p><a href="index.html">⬅ Back to Main Dashboard</a></p>
   </div>
 
   <script>
     async function loadPins() {
+      const tbody = document.getElementById('raylakePins');
       try {
-        const raylake = await fetch('raylake/guests.json').then(r => r.json());
-        document.getElementById('raylakePins').textContent = JSON.stringify(raylake, null, 2);
+        const data = await fetch('raylake/guests.json').then(r => r.json());
+        tbody.innerHTML = Object.entries(data).map(([key, pin]) => {
+          const match = key.match(/^(.+?)\s*\((.+?)\)/);
+          const name = match ? match[1].trim() : key;
+          const dates = match ? match[2].trim() : '';
+          return `<tr><td>${name}</td><td>${dates}</td><td class="pin">${pin}</td></tr>`;
+        }).join('');
       } catch (err) {
-        document.getElementById('raylakePins').textContent = "Failed to load guest data.";
+        tbody.innerHTML = '<tr><td colspan="3">Failed to load guest data.</td></tr>';
       }
     }
 
