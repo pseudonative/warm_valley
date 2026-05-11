@@ -5,8 +5,7 @@
   <title>Cleaner Dashboard</title>
   <style>
     body { font-family: sans-serif; background: #f2f2f2; padding: 2rem; }
-    .hidden { display: none; }
-    .login-box, .dashboard {
+    .dashboard {
       background: white; padding: 2rem; border-radius: 8px;
       max-width: 500px; margin: 2rem auto; box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
@@ -25,39 +24,10 @@
   </style>
 </head>
 <body>
-  <div class="login-box" id="loginBox">
-    <h2>Cleaner Login</h2>
-    <label>Username: <input type="text" id="username"></label><br><br>
-    <label>Password: <input type="password" id="password"></label><br><br>
-    <button onclick="login()">Login</button>
-    <p id="error" style="color:red;"></p>
-  </div>
-
-  <div class="dashboard hidden" id="dashboard">
+  <div class="dashboard">
     <h1>Cleaner Dashboard</h1>
     <a class="button" href="raylake.html">Ray Lake Dashboard</a>
     <a class="button" href="santafe.html">Santa Fe Dashboard</a>
   </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-  <script>
-    const USERS = {
-      "raylake": "482c811da5d5b4bc6d497ffa98491e38", // password
-      "santafe": "482c811da5d5b4bc6d497ffa98491e38"  // test
-    };
-
-    function login() {
-      const user = document.getElementById('username').value.trim().toLowerCase();
-      const pass = document.getElementById('password').value;
-      const hashed = md5(pass);
-
-      if (USERS[user] === hashed) {
-        document.getElementById('loginBox').classList.add('hidden');
-        document.getElementById('dashboard').classList.remove('hidden');
-      } else {
-        document.getElementById('error').innerText = "Access denied";
-      }
-    }
-  </script>
 </body>
 </html>
